@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+    <context:annotation-config />
+    <context:component-scan base-package="jp.co.projectname.Default_Maven_Project.*" />
+    <!-- 設定ファイルの読み込み（） -->
+    <context:property-placeholder location="classpath:*.properties"/>
+    <!-- アノテーションを使って実行 -->
+    <mvc:annotation-driven />
+	<mvc:resources mapping="/css/**" location="/WEB-INF/views/css/"/>
+    <mvc:resources mapping="/javascript/**" location="/WEB-INF/views/javascript/"/>
+     <mvc:resources mapping="/fonts/**" location="/WEB-INF/views/fonts/"/>
+    <mvc:resources mapping="/lib/**" location="/WEB-INF/views/lib/"/>
+<!--
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/views/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean> -->
+
+
+    <bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+  <property name="prefix" value="/WEB-INF/views/" />
+  <property name="suffix" value=".html" />
+  <property name="templateMode" value="HTML5" />
+  <property name="characterEncoding" value="UTF-8" />
+  <property name="cacheable" value="false"/>
+</bean>
+
+<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+  <property name="templateResolver" ref="templateResolver" />
+</bean>
+
+<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+  <property name="templateEngine" ref="templateEngine" />
+  <property name="characterEncoding" value="UTF-8" />
+</bean>
+</beans>
